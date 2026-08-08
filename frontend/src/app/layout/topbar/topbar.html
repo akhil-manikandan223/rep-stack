@@ -1,0 +1,31 @@
+<header class="flex h-14 w-full items-center gap-4 border-b bg-background px-4">
+  <!-- Hamburger -->
+  <button
+    hlmBtn
+    variant="ghost"
+    size="icon"
+    aria-label="Toggle sidebar"
+  >
+    <ng-icon name="lucideMenu" />
+  </button>
+
+  <!-- Brand -->
+  <span class="text-lg font-semibold tracking-tight">RepStack</span>
+
+  <!-- Search bar -->
+  <hlm-input-group class="mx-auto max-w-md flex-1">
+    <input hlmInputGroupInput placeholder="Search..." />
+    <hlm-input-group-addon>
+      <ng-icon name="lucideSearch" />
+    </hlm-input-group-addon>
+  </hlm-input-group>
+
+  <!-- Profile -->
+  <div class="flex items-center gap-2">
+    <hlm-avatar class="size-8">
+      <img hlmAvatarImage />
+      <span hlmAvatarFallback>akhil</span>
+    </hlm-avatar>
+    <span class="text-sm font-medium">j</span>
+  </div>
+</header>
