@@ -1,0 +1,47 @@
+<form class="flex flex-col gap-4" (submit)="$event.preventDefault(); onSave()">
+  @for (field of fields(); track field.prop) {
+    <div hlmField>
+      <label hlmFieldLabel [for]="field.prop">{{ field.label }}</label>
+
+      @switch (field.type) {
+        @case ('string') {
+          <input hlmInput [id]="field.prop" type="text" [formField]="$any(entityForm[field.prop])" />
+        }
+        @case ('number') {
+          <input hlmInput [id]="field.prop" type="number" [formField]="$any(entityForm[field.prop])" />
+        }
+        @case ('date') {
+          <input hlmInput [id]="field.prop" type="date" [formField]="$any(entityForm[field.prop])" />
+        }
+        @case ('boolean') {
+          <input [id]="field.prop" type="checkbox" [formField]="$any(entityForm[field.prop])" />
+        }
+        @case ('enum') {
+          <select hlmInput [id]="field.prop" [formField]="$any(entityForm[field.prop])">
+            <option value="">Select {{ field.label }}</option>
+            @for (option of field.enumOptions ?? []; track option.value) {
+              <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+        }
+        @case ('select') {
+          <select hlmInput [id]="field.prop" [formField]="$any(entityForm[field.prop])">
+            <option value="">Select {{ field.label }}</option>
+            @for (option of lookupOptions(field); track option.id) {
+              <option [value]="option.id">{{ option.name }}</option>
+            }
+          </select>
+        }
+      }
+
+      @if (entityForm[field.prop]().invalid() && entityForm[field.prop]().touched()) {
+        <span class="text-destructive text-xs">{{ field.label }} is required</span>
+      }
+    </div>
+  }
+
+  <div class="flex justify-end gap-2">
+    <button hlmBtn type="button" variant="outline" (click)="cancel.emit()">Cancel</button>
+    <button hlmBtn type="submit" [disabled]="entityForm().invalid() || !entityForm().dirty()">Save</button>
+  </div>
+</form>

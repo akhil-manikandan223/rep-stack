@@ -1,0 +1,197 @@
+<div class="flex h-full min-h-0 flex-col gap-3">
+  <div class="flex flex-wrap items-center gap-2 border-b pb-3">
+    <ng-icon [name]="icon()" class="text-muted-foreground" size="18" />
+    @if (title()) {
+      <h1 class="text-lg font-bold">{{ title() }}</h1>
+    }
+
+    <div class="ms-auto flex flex-wrap items-center gap-2">
+      <div class="flex h-7 items-center gap-1 rounded-md border bg-input/20 px-1.5 dark:bg-input/30">
+        <ng-icon name="lucideSearch" size="14" class="text-muted-foreground" />
+        <ng-icon name="lucideChevronDown" size="12" class="text-muted-foreground" />
+        <input
+          class="h-full w-40 border-0 bg-transparent px-1 text-sm outline-none placeholder:text-muted-foreground"
+          placeholder="Search..."
+          [attr.aria-label]="'Search ' + (title() || 'records')"
+          [value]="quickSearch()"
+          (input)="onQuickSearchChange($any($event.target).value)"
+        />
+      </div>
+
+      <button hlmBtn variant="outline" size="icon" aria-label="Toggle filters" (click)="showFilters.set(!showFilters())">
+        <ng-icon name="lucideTable2" />
+      </button>
+
+      <button hlmBtn size="default" (click)="create.emit()">
+        <ng-icon name="lucidePlus" />
+        New
+      </button>
+
+      <button hlmBtn variant="outline" size="icon" aria-label="Reset view" (click)="resetView()">
+        <ng-icon name="lucideRefreshCw" />
+      </button>
+
+      <button hlmBtn variant="outline" size="icon" aria-label="Settings">
+        <ng-icon name="lucideSettings" />
+      </button>
+
+      <button hlmBtn variant="outline" size="icon" aria-label="Menu">
+        <ng-icon name="lucideAlignJustify" />
+      </button>
+
+      <button type="button" class="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+        <ng-icon name="lucideLightbulb" size="16" />
+        Page Tips
+      </button>
+    </div>
+  </div>
+
+  <div hlmTableContainer class="scroll-thin flex-1 overflow-y-auto">
+    <table hlmTable>
+      <thead hlmTHead class="sticky top-0 z-10 bg-background">
+        <tr hlmTr class="divide-x divide-border">
+          @for (field of fields(); track field.prop) {
+            <th
+              hlmTh
+              [style.width.px]="field.width"
+              [class.text-right]="field.type === 'number'"
+              [class.cursor-pointer]="field.sortable !== false"
+              class="h-8 bg-background font-semibold select-none"
+              (click)="sortBy(field)"
+            >
+              <span
+                class="inline-flex items-center gap-1"
+                [class.w-full]="field.type === 'number'"
+                [class.justify-end]="field.type === 'number'"
+              >
+                {{ field.label }}
+                @if (field.sortable !== false) {
+                  @if (sortKey() === field.prop) {
+                    <ng-icon [name]="sortDir() === 'asc' ? 'lucideChevronUp' : 'lucideChevronDown'" size="14" />
+                  } @else {
+                    <ng-icon name="lucideChevronsUpDown" size="14" class="text-muted-foreground" />
+                  }
+                }
+              </span>
+            </th>
+          }
+          <th hlmTh class="h-8 bg-background w-0"></th>
+        </tr>
+        @if (showFilters()) {
+          <tr hlmTr class="divide-x divide-border">
+            @for (field of fields(); track field.prop) {
+              <th hlmTh class="h-8 bg-background">
+                @if (isFilterable(field)) {
+                  <input
+                    hlmInput
+                    class="h-6 w-full text-xs"
+                    placeholder="Filter..."
+                    [value]="columnFilters()[field.prop] ?? ''"
+                    (input)="setColumnFilter(field.prop, $any($event.target).value)"
+                  />
+                }
+              </th>
+            }
+            <th hlmTh class="h-8 bg-background"></th>
+          </tr>
+        }
+      </thead>
+      <tbody hlmTBody>
+        @for (row of pagedRows(); track row.id; let i = $index) {
+          <tr hlmTr class="divide-x divide-border" [class.bg-muted/60]="i % 2 === 1">
+            @for (field of fields(); track field.prop; let j = $index) {
+              <td
+                hlmTd
+                class="px-2 py-1"
+                [class.text-right]="field.type === 'number'"
+                [class.text-center]="field.type === 'boolean'"
+              >
+                @if (field.type === 'boolean') {
+                  @if (row[field.prop]) {
+                    <ng-icon name="lucideCheck" size="16" class="inline-block" />
+                  }
+                } @else if (j === 0) {
+                  <button type="button" class="font-medium text-lookUp-primary hover:underline" (click)="edit.emit(row)">
+                    {{ displayValue(field, row) }}
+                  </button>
+                } @else {
+                  {{ displayValue(field, row) }}
+                }
+              </td>
+            }
+            <td hlmTd class="px-2 py-1">
+              <div class="flex items-center gap-1">
+                <button hlmBtn variant="ghost" size="icon" aria-label="Edit" (click)="edit.emit(row)">
+                  <ng-icon name="lucidePencil" />
+                </button>
+                <button hlmBtn variant="ghost" size="icon" aria-label="Delete" (click)="delete.emit(row)">
+                  <ng-icon name="lucideTrash2" />
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr hlmTr>
+            <td hlmTd [attr.colspan]="fields().length + 1" class="px-2 py-1 text-center text-muted-foreground">
+              No records found.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex flex-wrap items-center justify-between gap-2 border-t pt-3 text-xs text-muted-foreground">
+    <div class="flex items-center gap-2">
+      <span>{{ visibleRows().length }} Records</span>
+      <select hlmInput class="h-7 w-auto" (change)="setPageSize($any($event.target).value)">
+        @for (size of pageSizeOptions; track size) {
+          <option [value]="size" [selected]="size === pageSize()">{{ size }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="flex items-center gap-1">
+      <button hlmBtn variant="outline" size="icon" [disabled]="currentPage() === 0" (click)="goToPage(0)">
+        <ng-icon name="lucideChevronsLeft" size="14" />
+      </button>
+      <button
+        hlmBtn
+        variant="outline"
+        size="icon"
+        [disabled]="currentPage() === 0"
+        (click)="goToPage(currentPage() - 1)"
+      >
+        <ng-icon name="lucideChevronLeft" size="14" />
+      </button>
+      @for (pageNumber of pageNumbers(); track pageNumber) {
+        <button
+          hlmBtn
+          [variant]="pageNumber === currentPage() ? 'default' : 'outline'"
+          size="icon"
+          (click)="goToPage(pageNumber)"
+        >
+          {{ pageNumber + 1 }}
+        </button>
+      }
+      <button
+        hlmBtn
+        variant="outline"
+        size="icon"
+        [disabled]="currentPage() >= pageCount() - 1"
+        (click)="goToPage(currentPage() + 1)"
+      >
+        <ng-icon name="lucideChevronRight" size="14" />
+      </button>
+      <button
+        hlmBtn
+        variant="outline"
+        size="icon"
+        [disabled]="currentPage() >= pageCount() - 1"
+        (click)="goToPage(pageCount() - 1)"
+      >
+        <ng-icon name="lucideChevronsRight" size="14" />
+      </button>
+    </div>
+  </div>
+</div>

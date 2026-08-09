@@ -1,1 +1,26 @@
-<p>equipments works!</p>
+<app-entity-list-page
+  class="min-h-0 flex-1"
+  title="Equipment"
+  icon="lucideDumbbell"
+  [fields]="fields"
+  [rows]="rows()"
+  (create)="openCreate()"
+  (edit)="openEdit($event)"
+  (delete)="remove($event)"
+/>
+
+@if (dialogMode()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+    <div class="w-full max-w-lg rounded-lg border bg-card p-6 shadow-lg">
+      <h2 class="mb-4 text-base font-semibold">
+        {{ dialogMode() === 'create' ? 'Create equipment' : 'Edit equipment' }}
+      </h2>
+      <app-entity-detail-page
+        [fields]="fields"
+        [initialValue]="editingRow()!"
+        (save)="save($event)"
+        (cancel)="closeDialog()"
+      />
+    </div>
+  </div>
+}

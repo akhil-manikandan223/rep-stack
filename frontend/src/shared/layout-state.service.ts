@@ -7,4 +7,8 @@ export class LayoutState {
   toggleSidebar(): void {
     this.sidebarOpen.update((open) => !open);
   }
+
+  closeSidebar(): void {
+    this.sidebarOpen.set(false);
+  }
 }
