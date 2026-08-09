@@ -74,6 +74,9 @@ export class EntityListPage {
   readonly title = input('');
   /** Name of an icon registered (via provideIcons) by this component or an ancestor. */
   readonly icon = input('lucideHome');
+  readonly allowDelete = input(true);
+  readonly allowCreate = input(true);
+  readonly allowEdit = input(true);
 
   readonly create = output<void>();
   readonly edit = output<EntityRow>();

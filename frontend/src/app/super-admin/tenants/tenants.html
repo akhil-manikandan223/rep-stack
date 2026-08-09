@@ -1,0 +1,31 @@
+<app-entity-list-page
+  class="min-h-0 flex-1"
+  title="Tenants"
+  icon="lucideBuilding2"
+  [fields]="listFields"
+  [rows]="rows()"
+  [allowDelete]="false"
+  (create)="openCreate()"
+  (edit)="openDetail($event)"
+/>
+
+@if (dialogMode()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+    <div class="w-full max-w-lg rounded-lg border bg-card p-6 shadow-lg">
+      <h2 class="mb-4 text-base font-semibold">Create tenant</h2>
+      @if (previewUrl()) {
+        <p class="mb-4 text-sm text-muted-foreground">
+          This tenant will be available at
+          <span class="font-medium text-foreground">{{ previewUrl() }}</span>
+        </p>
+      }
+      <app-entity-detail-page
+        [fields]="createFields"
+        [initialValue]="editingRow()!"
+        (valueChange)="onDraftChange($event)"
+        (save)="save($event)"
+        (cancel)="closeDialog()"
+      />
+    </div>
+  </div>
+}

@@ -42,6 +42,6 @@
 
   <div class="flex justify-end gap-2">
     <button hlmBtn type="button" variant="outline" (click)="cancel.emit()">Cancel</button>
-    <button hlmBtn type="submit" [disabled]="entityForm().invalid() || !entityForm().dirty()">Save</button>
+    <button hlmBtn type="submit" [disabled]="entityForm().invalid()">Save</button>
   </div>
 </form>

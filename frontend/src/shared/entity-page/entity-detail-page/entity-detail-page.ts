@@ -1,5 +1,6 @@
 import {
   Component,
+  effect,
   inject,
   input,
   Injector,
@@ -27,6 +28,8 @@ export class EntityDetailPage implements OnInit {
 
   readonly save = output<EntityRow>();
   readonly cancel = output<void>();
+  /** Emits the draft's current value on every change, before it's saved. */
+  readonly valueChange = output<EntityRow>();
 
   private readonly injector = inject(Injector);
 
@@ -53,6 +56,7 @@ export class EntityDetailPage implements OnInit {
         }
       }),
     );
+    runInInjectionContext(this.injector, () => effect(() => this.valueChange.emit(this.model())));
   }
 
   protected lookupOptions(field: EntityField) {

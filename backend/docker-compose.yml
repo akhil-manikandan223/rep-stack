@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: repstack
+      POSTGRES_PASSWORD: repstack
+      POSTGRES_DB: repstack
+    ports:
+      - "5434:5432"
+    volumes:
+      - repstack_postgres_data:/var/lib/postgresql/data
+      - ./docker/init-app-role.sql:/docker-entrypoint-initdb.d/init-app-role.sql:ro
+
+volumes:
+  repstack_postgres_data:

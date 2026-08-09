@@ -22,10 +22,12 @@
         <ng-icon name="lucideTable2" />
       </button>
 
-      <button hlmBtn size="default" (click)="create.emit()">
-        <ng-icon name="lucidePlus" />
-        New
-      </button>
+      @if (allowCreate()) {
+        <button hlmBtn size="default" (click)="create.emit()">
+          <ng-icon name="lucidePlus" />
+          New
+        </button>
+      }
 
       <button hlmBtn variant="outline" size="icon" aria-label="Reset view" (click)="resetView()">
         <ng-icon name="lucideRefreshCw" />
@@ -110,7 +112,7 @@
                   @if (row[field.prop]) {
                     <ng-icon name="lucideCheck" size="16" class="inline-block" />
                   }
-                } @else if (j === 0) {
+                } @else if (j === 0 && allowEdit()) {
                   <button type="button" class="font-medium text-lookUp-primary hover:underline" (click)="edit.emit(row)">
                     {{ displayValue(field, row) }}
                   </button>
@@ -121,12 +123,16 @@
             }
             <td hlmTd class="px-2 py-1">
               <div class="flex items-center gap-1">
-                <button hlmBtn variant="ghost" size="icon" aria-label="Edit" (click)="edit.emit(row)">
-                  <ng-icon name="lucidePencil" />
-                </button>
-                <button hlmBtn variant="ghost" size="icon" aria-label="Delete" (click)="delete.emit(row)">
-                  <ng-icon name="lucideTrash2" />
-                </button>
+                @if (allowEdit()) {
+                  <button hlmBtn variant="ghost" size="icon" aria-label="Edit" (click)="edit.emit(row)">
+                    <ng-icon name="lucidePencil" />
+                  </button>
+                }
+                @if (allowDelete()) {
+                  <button hlmBtn variant="ghost" size="icon" aria-label="Delete" (click)="delete.emit(row)">
+                    <ng-icon name="lucideTrash2" />
+                  </button>
+                }
               </div>
             </td>
           </tr>

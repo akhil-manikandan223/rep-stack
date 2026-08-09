@@ -1,0 +1,38 @@
+<div class="mx-auto flex max-w-2xl flex-col gap-6">
+  <a routerLink="/super-admin/tenants" class="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+    <ng-icon name="lucideArrowLeft" size="16" />
+    Back to tenants
+  </a>
+
+  @if (loading()) {
+    <p class="text-sm text-muted-foreground">Loading tenant…</p>
+  } @else if (tenant()) {
+    <div class="rounded-lg border bg-card p-6">
+      <h1 class="text-xl font-bold">{{ tenant()!.name }}</h1>
+      <p class="mt-1 text-sm text-muted-foreground">
+        Slug: {{ tenant()!.slug }} · Created {{ tenant()!.createdAt?.toLocaleDateString() }}
+      </p>
+
+      <div class="mt-6">
+        <app-entity-detail-page [fields]="editFields" [initialValue]="tenant()!" (save)="save($event)" (cancel)="backToList()" />
+      </div>
+    </div>
+
+    <div class="rounded-lg border bg-card p-6">
+      <h2 class="mb-4 text-base font-semibold">Features</h2>
+      <ul class="flex flex-col gap-3">
+        @for (feature of features(); track feature.key) {
+          <li class="flex items-center justify-between gap-2">
+            <div>
+              <p class="text-sm font-medium">{{ feature.name }}</p>
+              @if (feature.description) {
+                <p class="text-xs text-muted-foreground">{{ feature.description }}</p>
+              }
+            </div>
+            <input type="checkbox" [checked]="feature.enabled" (change)="toggleFeature(feature)" />
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>

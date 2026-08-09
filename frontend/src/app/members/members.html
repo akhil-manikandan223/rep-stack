@@ -1,0 +1,28 @@
+<app-entity-list-page
+  class="min-h-0 flex-1"
+  title="Members"
+  icon="lucideUsers"
+  [fields]="listFields"
+  [rows]="rows()"
+  [allowDelete]="false"
+  [allowCreate]="canManage()"
+  [allowEdit]="canManage()"
+  (create)="openCreate()"
+  (edit)="openEdit($event)"
+/>
+
+@if (dialogMode()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+    <div class="w-full max-w-lg rounded-lg border bg-card p-6 shadow-lg">
+      <h2 class="mb-4 text-base font-semibold">
+        {{ dialogMode() === 'create' ? 'Create member' : 'Edit member' }}
+      </h2>
+      <app-entity-detail-page
+        [fields]="dialogMode() === 'create' ? createFields : editFields"
+        [initialValue]="editingRow()!"
+        (save)="save($event)"
+        (cancel)="closeDialog()"
+      />
+    </div>
+  </div>
+}

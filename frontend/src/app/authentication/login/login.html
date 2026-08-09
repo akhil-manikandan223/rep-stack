@@ -18,6 +18,7 @@
             type="email"
             placeholder="you@example.com"
             autocomplete="email"
+            [formField]="credentialsForm.email"
           />
         </hlm-input-group>
       </div>
@@ -39,11 +40,18 @@
             type="password"
             placeholder="••••••••"
             autocomplete="current-password"
+            [formField]="credentialsForm.password"
           />
         </hlm-input-group>
       </div>
 
-      <button hlmBtn type="submit" class="mt-2 w-full">Login</button>
+      @if (errorMessage()) {
+        <p class="text-destructive text-sm">{{ errorMessage() }}</p>
+      }
+
+      <button hlmBtn type="submit" class="mt-2 w-full" [disabled]="submitting()">
+        {{ submitting() ? 'Signing in…' : 'Login' }}
+      </button>
     </form>
 
     <p class="mt-6 text-center text-sm text-muted-foreground">
