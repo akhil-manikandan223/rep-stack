@@ -1,1 +1,110 @@
-<p>dashboard works!</p>
+<div class="parent">
+    <!-- General plan members -->
+    <div class="general-plan-members-card flex flex-col gap-2 rounded-lg border bg-card p-4 shadow-sm">
+        <div class="flex items-center justify-between">
+            <span class="text-sm text-muted-foreground">General plan members</span>
+            <ng-icon name="lucideUsers" class="text-muted-foreground" size="18" />
+        </div>
+        <span class="text-2xl font-semibold">482</span>
+        <span class="text-xs font-medium text-emerald-600">+12 this month</span>
+    </div>
+
+    <!-- Personal training members -->
+    <div class="personal-training-members-card flex flex-col gap-2 rounded-lg border bg-card p-4 shadow-sm">
+        <div class="flex items-center justify-between">
+            <span class="text-sm text-muted-foreground">Personal training members</span>
+            <ng-icon name="lucideUserCheck" class="text-muted-foreground" size="18" />
+        </div>
+        <span class="text-2xl font-semibold">96</span>
+        <span class="text-xs font-medium text-emerald-600">+4 this month</span>
+    </div>
+
+    <!-- Total equipment -->
+    <div class="total-equipments-card flex flex-col gap-2 rounded-lg border bg-card p-4 shadow-sm">
+        <div class="flex items-center justify-between">
+            <span class="text-sm text-muted-foreground">Total equipment</span>
+            <ng-icon name="lucideDumbbell" class="text-muted-foreground" size="18" />
+        </div>
+        <span class="text-2xl font-semibold">58</span>
+        <span class="text-xs font-medium text-muted-foreground">3 under maintenance</span>
+    </div>
+
+    <!-- Recent activity / audit log -->
+    <div class="recent-activity-card flex flex-col gap-3 overflow-y-auto rounded-lg border bg-card p-4 shadow-sm">
+        <div class="flex items-center gap-2">
+            <ng-icon name="lucideActivity" class="text-muted-foreground" size="18" />
+            <span class="text-sm font-medium">Recent activity</span>
+        </div>
+        <ul class="flex flex-col gap-3">
+            @for (entry of recentActivity; track entry.action) {
+                <li class="flex flex-col gap-0.5 border-b pb-3 last:border-0 last:pb-0">
+                    <span class="text-sm">{{ entry.action }}</span>
+                    <span class="text-xs text-muted-foreground">{{ entry.timestamp }}</span>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <!-- Today's check-ins -->
+    <div class="checkins-card flex flex-col items-center justify-center gap-1 rounded-lg border bg-card p-3 text-center shadow-sm">
+        <ng-icon name="lucideLogIn" class="text-muted-foreground" size="16" />
+        <span class="text-lg font-semibold">37</span>
+        <span class="text-xs text-muted-foreground">Check-ins today</span>
+    </div>
+
+    <!-- Expiring memberships -->
+    <div class="membership-expiry-card flex flex-col items-center justify-center gap-1 rounded-lg border border-amber-500/40 bg-amber-500/10 p-3 text-center shadow-sm">
+        <ng-icon name="lucideAlertTriangle" class="text-amber-600" size="16" />
+        <span class="text-lg font-semibold text-amber-700">8</span>
+        <span class="text-xs text-amber-700">Expiring in 7 days</span>
+    </div>
+
+    <!-- Calendar -->
+    <div class="calendar-card flex flex-col gap-2 rounded-lg border bg-card p-3 shadow-sm">
+        <span class="text-center text-sm font-medium">{{ monthLabel }}</span>
+        <div class="grid grid-cols-7 text-center text-[10px] text-muted-foreground">
+            @for (label of weekdayLabels; track label) {
+                <span>{{ label }}</span>
+            }
+        </div>
+        @for (week of calendarWeeks; track $index) {
+            <div class="grid grid-cols-7 gap-y-1 text-center text-xs">
+                @for (cell of week; track $index) {
+                    <span
+                        class="mx-auto flex size-6 items-center justify-center rounded-full"
+                        [class.bg-primary]="cell.isToday"
+                        [class.text-primary-foreground]="cell.isToday"
+                        [class.font-semibold]="cell.isToday"
+                    >
+                        {{ cell.day ?? '' }}
+                    </span>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Membership growth (chart placeholder, pending real data) -->
+    <div class="membership-growth-chart flex flex-col items-center justify-center gap-2 rounded-lg border bg-card p-4 text-center shadow-sm">
+        <ng-icon name="lucideBarChart3" class="text-muted-foreground" size="28" />
+        <span class="text-sm font-medium">Membership growth</span>
+        <span class="max-w-xs text-xs text-muted-foreground">
+            A trend chart will appear here once real membership data is connected.
+        </span>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="quick-actions-card flex flex-wrap items-center justify-center gap-2 rounded-lg border bg-card p-3 shadow-sm">
+        <button hlmBtn size="sm" variant="secondary">
+            <ng-icon name="lucideUserPlus" />
+            Add member
+        </button>
+        <button hlmBtn size="sm" variant="secondary">
+            <ng-icon name="lucideDumbbell" />
+            Add equipment
+        </button>
+        <button hlmBtn size="sm" variant="secondary">
+            <ng-icon name="lucideCalendarPlus" />
+            Schedule class
+        </button>
+    </div>
+</div>

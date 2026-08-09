@@ -1,10 +1,11 @@
-<header class="flex h-14 w-full items-center gap-4 border-b bg-background px-4">
+<header class="flex h-12 w-full items-center gap-4 bg-primary px-4 text-primary-foreground shadow-sm">
   <!-- Hamburger -->
   <button
     hlmBtn
     variant="ghost"
     size="icon"
     aria-label="Toggle sidebar"
+    (click)="layoutState.toggleSidebar()"
   >
     <ng-icon name="lucideMenu" />
   </button>
@@ -14,8 +15,8 @@
 
   <!-- Search bar -->
   <hlm-input-group class="mx-auto max-w-md flex-1">
-    <input hlmInputGroupInput placeholder="Search..." />
-    <hlm-input-group-addon>
+    <input hlmInputGroupInput placeholder="Search..." class="placeholder:text-white" />
+    <hlm-input-group-addon class="text-white">
       <ng-icon name="lucideSearch" />
     </hlm-input-group-addon>
   </hlm-input-group>
@@ -23,9 +24,9 @@
   <!-- Profile -->
   <div class="flex items-center gap-2">
     <hlm-avatar class="size-8">
-      <img hlmAvatarImage />
-      <span hlmAvatarFallback>akhil</span>
+      <img hlmAvatarImage [src]="" [alt]="" />
+      <span hlmAvatarFallback>hi</span>
     </hlm-avatar>
-    <span class="text-sm font-medium">j</span>
+    <span class="text-sm font-medium">John Doe</span>
   </div>
 </header>

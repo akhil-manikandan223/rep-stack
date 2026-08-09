@@ -1,0 +1,43 @@
+.parent {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 8px;
+    height: 100%;
+}
+    
+.recent-activity-card {
+    grid-row: span 5 / span 5;
+}
+
+.checkins-card {
+    grid-column-start: 3;
+    grid-row-start: 2;
+}
+
+.membership-expiry-card {
+    grid-column-start: 3;
+    grid-row-start: 3;
+}
+
+.calendar-card {
+    grid-row: span 2 / span 2;
+    grid-column-start: 3;
+    grid-row-start: 4;
+}
+
+.membership-growth-chart {
+    grid-column: span 2 / span 2;
+    grid-row: span 3 / span 3;
+    grid-column-start: 1;
+    grid-row-start: 3;
+}
+
+.quick-actions-card {
+    grid-column: span 2 / span 2;
+    grid-column-start: 1;
+    grid-row-start: 2;
+}
+        
+        
+        

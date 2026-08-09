@@ -1,1 +1,54 @@
-<p>login works!</p>
+<div class="flex min-h-screen items-center justify-center bg-muted/30 p-4">
+  <div class="w-full max-w-sm rounded-xl border bg-card p-8 shadow-lg">
+    <div class="mb-6 text-center">
+      <span class="text-2xl font-bold tracking-tight text-primary">RepStack</span>
+      <p class="mt-1 text-sm text-muted-foreground">Sign in to manage your gym</p>
+    </div>
+
+    <form class="flex flex-col gap-4" (submit)="login($event)">
+      <div hlmField>
+        <label hlmFieldLabel for="email">Email</label>
+        <hlm-input-group>
+          <hlm-input-group-addon>
+            <ng-icon name="lucideMail" />
+          </hlm-input-group-addon>
+          <input
+            hlmInputGroupInput
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+          />
+        </hlm-input-group>
+      </div>
+
+      <div hlmField>
+        <div class="flex items-center justify-between">
+          <label hlmFieldLabel for="password">Password</label>
+          <a routerLink="/forgot-password" class="text-xs text-primary hover:underline">
+            Forgot password?
+          </a>
+        </div>
+        <hlm-input-group>
+          <hlm-input-group-addon>
+            <ng-icon name="lucideLock" />
+          </hlm-input-group-addon>
+          <input
+            hlmInputGroupInput
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
+        </hlm-input-group>
+      </div>
+
+      <button hlmBtn type="submit" class="mt-2 w-full">Login</button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-muted-foreground">
+      Don't have an account?
+      <a routerLink="/register" class="font-medium text-primary hover:underline">Sign up</a>
+    </p>
+  </div>
+</div>

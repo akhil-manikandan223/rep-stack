@@ -17,7 +17,7 @@ export const routes: Routes = [
       import('./authentication/forgot-password/forgot-password').then((m) => m.ForgotPassword),
   },
   {
-    path: 'body',
+    path: '',
     component: SiteWrapperContainer,
     children: [
         { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
